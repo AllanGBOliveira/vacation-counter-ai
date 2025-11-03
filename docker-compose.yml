@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  # Ambiente de desenvolvimento
+  nuxt-dev:
+    image: node:lts-alpine
+    container_name: vacation-counter-dev
+    working_dir: /app
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.nuxt
+      - /app/.output
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+    # Carrega variáveis do .env automaticamente
+    env_file:
+      - .env
+    # npm install roda postinstall (nuxt prepare) automaticamente
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0"
+    stdin_open: true
+    tty: true
+
+  # Ambiente de preview/produção (para testar build)
+  nuxt-preview:
+    image: node:lts-alpine
+    container_name: vacation-counter-preview
+    working_dir: /app
+    ports:
+      - "3001:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.nuxt
+      - /app/.output
+    environment:
+      - NODE_ENV=production
+    # Carrega variáveis do .env automaticamente
+    env_file:
+      - .env
+    # npm install roda postinstall (nuxt prepare) automaticamente
+    command: sh -c "npm install && npm run generate && npm run preview -- --host 0.0.0.0"
+    stdin_open: true
+    tty: true
+

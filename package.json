@@ -7,7 +7,11 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "typecheck": "nuxi typecheck",
+    "deploy": "npm run generate && touch .output/public/.nojekyll"
   },
   "dependencies": {
     "@nuxt/eslint": "^1.10.0",
@@ -20,5 +24,8 @@
     "typescript": "^5.9.3",
     "vue": "^3.5.22",
     "vue-router": "^4.6.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2"
   }
 }
