@@ -2,44 +2,45 @@
 
 /**
  * Tipagem para variáveis de ambiente
- * Isso fornece autocomplete e type safety ao usar import.meta.env
+ * Funciona tanto para import.meta.env quanto para process.env
  */
-interface ImportMetaEnv {
+
+// Variáveis de ambiente do projeto
+interface EnvironmentVariables {
   // Application
-  readonly NUXT_PUBLIC_APP_NAME: string
-  readonly NUXT_PUBLIC_APP_VERSION: string
+  NUXT_PUBLIC_APP_NAME: string
+  NUXT_PUBLIC_APP_VERSION: string
   
   // GitHub Pages
-  readonly NUXT_PUBLIC_BASE_URL: string
+  NUXT_PUBLIC_BASE_URL: string
   
   // API Configuration
-  readonly NUXT_PUBLIC_API_BASE_URL: string
-  readonly NUXT_PUBLIC_API_TIMEOUT: string
+  NUXT_PUBLIC_API_BASE_URL: string
+  NUXT_PUBLIC_API_TIMEOUT: string
   
   // Feature Flags
-  readonly NUXT_PUBLIC_ENABLE_ANALYTICS: string
-  readonly NUXT_PUBLIC_ENABLE_DEBUG: string
+  NUXT_PUBLIC_ENABLE_ANALYTICS: string
+  NUXT_PUBLIC_ENABLE_DEBUG: string
   
   // Analytics (opcional)
-  readonly NUXT_PUBLIC_GA_ID?: string
-  
-  // Node environment
+  NUXT_PUBLIC_GA_ID?: string
+}
+
+// Tipagem para import.meta.env (usado globalmente pelo Vite/Nuxt)
+interface ImportMetaEnv extends EnvironmentVariables {
   readonly NODE_ENV: 'development' | 'production' | 'test'
   readonly DEV: boolean
   readonly PROD: boolean
 }
 
-interface ImportMeta {
-  readonly env: ImportMetaEnv
-}
+// Helper type para garantir que ImportMetaEnv seja reconhecido como usado
+type _Env = ImportMetaEnv
 
-/**
- * Tipagem para process.env (usado no nuxt.config.ts)
- */
+// Tipagem para process.env (usado no nuxt.config.ts)
 declare global {
   namespace NodeJS {
-    interface ProcessEnv extends ImportMetaEnv {
-      // Adicione variáveis específicas do Node aqui se necessário
+    interface ProcessEnv extends EnvironmentVariables {
+      readonly NODE_ENV: 'development' | 'production' | 'test'
     }
   }
 }

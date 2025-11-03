@@ -55,8 +55,8 @@ export const useAppConfig = () => {
      * Informações de ambiente
      */
     env: {
-      isDevelopment: process.dev,
-      isProduction: !process.dev,
+      isDevelopment: import.meta.dev,
+      isProduction: !import.meta.dev,
       // Também disponível via import.meta.env
       get mode() {
         return import.meta.env.MODE
